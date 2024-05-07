@@ -18,13 +18,16 @@ class Post extends Model
         'preview_image',
         'main_image',
         'views_count',
-        'category_id'
+        'category_id',
+        'is_published'
     ];
 
     protected $casts = [
         'views_count' => 'integer',
         'user_id' => 'integer',
-        'category_id' => 'integer'
+        'category_id' => 'integer',
+        'is_published' => 'bool',
+        'created_at' => 'datetime',
     ];
 
     public function user()
