@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-	<nav aria-label="breadcrumb" class="py-5 px-4">
+	<nav aria-label="breadcrumb" class="pt-16 pb-5 px-4">
 		<ol class="breadcrumb flex text-sm text-gray-500">
 			@foreach ($breadcrumbs as $breadcrumb)
 					<li class="mr-2">

@@ -6,12 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', config('app.name', 'Laravel'))</title>
     @vite('resources/css/app.css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     @stack('css')
 </head>
 <body class="flex flex-col min-h-screen">
-    <header class="bg-white shadow">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-xl font-semibold text-gray-700 no-underline">
+    <header class="bg-white bg-opacity-90 fixed top-0 left-0 w-full z-20 shadow-sm">
+        <div class="container mx-auto px-4 flex justify-between items-center py-2">
+            <a href="{{ route('home') }}" class="text-xl font-bold text-gray-800 no-underline">
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button id="menu-btn" class="block lg:hidden">
@@ -19,34 +21,42 @@
             </button>
             <nav class="hidden lg:block">
                 <ul class="flex items-center">
-                    <li><a href="{{ route('home') }}" class="px-4 py-2 text-sm {{ active_link('home', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Главная') }}</a></li>
-                    <li><a href="{{ route('about') }}" class="px-4 py-2 text-gray-500 text-sm {{ active_link('about', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Обо мне') }}</a></li>
-                    <li><a href="{{ route('projects') }}" class="px-4 py-2 text-gray-500 text-sm {{ active_link('projects', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Проекты') }}</a></li>
-                    <li><a href="" class="px-4 py-2 text-gray-500 text-sm {{ active_link('posts', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Посты') }}</a></li>
-                    <li><a href="" class="px-4 py-2 text-gray-500 text-sm {{ active_link('contacts', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Контакты') }}</a></li>
+                    <li><a href="{{ route('home') }}" class="px-4 py-2 {{ active_link('home', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Главная') }}</a></li>
+                    <li><a href="{{ route('about') }}" class="px-4 py-2 {{ active_link('about', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Обо мне') }}</a></li>
+                    <li><a href="{{ route('projects') }}" class="px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Проекты') }}</a></li>
+                    <li><a href="{{ route('posts') }}" class="px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Посты') }}</a></li>
+                    <li><a href="{{ route('contacts') }}" class="px-4 py-2 {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Контакты') }}</a></li>
                 </ul>
             </nav>
         </div>
         <nav class="lg:hidden">
             <ul id="menu" class="hidden absolute w-full bg-white shadow-md">
-                <li><a href="{{ route('home') }}" class="block px-4 py-2 text-sm {{ active_link('home', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Главная') }}</a></li>
-                <li><a href="{{ route('about') }}" class="block px-4 py-2 text-gray-500 text-sm {{ active_link('about', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Обо мне') }}</a></li>
-                <li><a href="{{ route('projects') }}" class="block px-4 py-2 text-gray-500 text-sm {{ active_link('projects', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Проекты') }}</a></li>
-                <li><a href="" class="block px-4 py-2 text-gray-500 text-sm {{ active_link('posts', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Посты') }}</a></li>
-                <li><a href="" class="block px-4 py-2 text-gray-500 text-sm {{ active_link('contacts', 'text-gray-900') != '' ? 'text-gray-900' : 'text-gray-500' }} hover:text-gray-900 hover:underline">{{ __('Контакты') }}</a></li>
+                <li><a href="{{ route('home') }}" class="block px-4 py-2 {{ active_link('home', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Главная') }}</a></li>
+                <li><a href="{{ route('about') }}" class="block px-4 py-2 {{ active_link('about', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Обо мне') }}</a></li>
+                <li><a href="{{ route('projects') }}" class="block px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Проекты') }}</a></li>
+                <li><a href="{{ route('posts') }}" class="block px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Посты') }}</a></li>
+                <li><a href="{{ route('contacts') }}" class="block px-4 py-2 {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Контакты') }}</a></li>
             </ul>
         </nav>
     </header>
     <main class="flex-grow">
         @yield('content')
     </main>
-    <footer class="bg-white shadow mt-auto">
-        <div class="container mx-auto px-6 py-4">
-            <p class="text-gray-700 text-center text-sm">
-                &copy; {{ now()->year }} {{ config('app.name', 'Laravel') }}. All rights reserved.
-            </p>
+    <footer class="bg-gray-800 text-white mt-auto">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <p>&copy; 2024 MmGrand. Все права защищены.</p>
+                <div class="flex flex-col md:flex-row md:gap-4 gap-2">
+                    <a href="https://vk.com/maksimzarubin" class="hover:text-gray-400" target="_blank" rel="noopener noreferrer">Вконтакте</a>
+                    <a href="https://t.me/MmGranddd" class="hover:text-gray-400" target="_blank" rel="noopener noreferrer">Телеграмм</a>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold py-2 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
+        ↑
+    </button>
 
     @vite('resources/js/menu.js')
     @stack('js')

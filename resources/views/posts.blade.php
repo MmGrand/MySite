@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-	Мои проекты
+	Мои посты
 @endsection
 
 @section('content')
