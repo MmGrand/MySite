@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', config('app.name', 'Laravel'))</title>
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
@@ -54,8 +55,8 @@
         </div>
     </footer>
 
-    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold py-2 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
-        ↑
+    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 z-1000 bg-blue-500 hover:bg-blue-700 text-white text-xl py-2 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
+        🠕 {{ __('Наверх') }}
     </button>
 
     @vite('resources/js/menu.js')
