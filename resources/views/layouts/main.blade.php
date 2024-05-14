@@ -24,8 +24,8 @@
                 <ul class="flex items-center">
                     <li><a href="{{ route('home') }}" class="px-4 py-2 {{ active_link('home', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Главная') }}</a></li>
                     <li><a href="{{ route('about') }}" class="px-4 py-2 {{ active_link('about', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Обо мне') }}</a></li>
-                    <li><a href="{{ route('projects') }}" class="px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Проекты') }}</a></li>
-                    <li><a href="{{ route('posts') }}" class="px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Посты') }}</a></li>
+                    <li><a href="{{ route('projects.index') }}" class="px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Проекты') }}</a></li>
+                    <li><a href="{{ route('posts.index') }}" class="px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Посты') }}</a></li>
                     <li><a href="{{ route('contacts') }}" class="px-4 py-2 {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600 hover:text-gray-800' }} hover:underline transition-colors">{{ __('Контакты') }}</a></li>
                 </ul>
             </nav>
@@ -34,8 +34,8 @@
             <ul id="menu" class="hidden absolute w-full bg-white shadow-md">
                 <li><a href="{{ route('home') }}" class="block px-4 py-2 {{ active_link('home', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Главная') }}</a></li>
                 <li><a href="{{ route('about') }}" class="block px-4 py-2 {{ active_link('about', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Обо мне') }}</a></li>
-                <li><a href="{{ route('projects') }}" class="block px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Проекты') }}</a></li>
-                <li><a href="{{ route('posts') }}" class="block px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Посты') }}</a></li>
+                <li><a href="{{ route('projects.index') }}" class="block px-4 py-2 {{ active_link('projects', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Проекты') }}</a></li>
+                <li><a href="{{ route('posts.index') }}" class="block px-4 py-2 {{ active_link('posts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Посты') }}</a></li>
                 <li><a href="{{ route('contacts') }}" class="block px-4 py-2 {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors">{{ __('Контакты') }}</a></li>
             </ul>
         </nav>

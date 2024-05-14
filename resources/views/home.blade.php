@@ -5,15 +5,15 @@
 @endsection
 
 @section('content')
-		<section class="bg-blue-500 text-white text-center pt-20 pb-12">
-			<div class="container mx-auto px-4">
-					<h1 class="text-3xl md:text-5xl font-bold mb-4">Добро пожаловать на мой персональный сайт</h1>
-					<p class="text-xl mb-8">Здесь вы найдете мои проекты, посты и подробности моего профессионального пути.</p>
-					<a href="{{ route('about') }}" class="inline-block bg-white text-blue-500 rounded-full px-8 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-blue-200">Узнать больше</a>
-			</div>
-		</section>
+	<section class="bg-blue-500 text-white text-center pt-20 pb-12">
+		<div class="container mx-auto px-4">
+				<h1 class="text-3xl md:text-5xl font-bold mb-4">Добро пожаловать на мой персональный сайт</h1>
+				<p class="text-xl mb-8">Здесь вы найдете мои проекты, посты и подробности моего профессионального пути.</p>
+				<a href="{{ route('about') }}" class="inline-block bg-white text-blue-500 rounded-full px-8 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-blue-200">Узнать больше</a>
+		</div>
+	</section>
 
-		<section class="bg-white py-12">
+	<section class="bg-white py-12">
 			<div class="container mx-auto px-4">
 				<h2 class="text-3xl font-bold text-center mb-6">Мои проекты</h2>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -37,7 +37,7 @@
 						@endforeach
 				</div>
 				<div class="text-center mt-8">
-					<a href="{{ route('projects') }}" class="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-lg py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:scale-105">
+					<a href="{{ route('projects.index') }}" class="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-lg py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:scale-105">
 							Все проекты
 					</a>
 				</div>
@@ -77,10 +77,10 @@
 					@endforeach
 			</div>
 			<div class="text-center mt-8">
-				<a href="{{ route('posts') }}" class="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-lg py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:scale-105">
+				<a href="{{ route('posts.index') }}" class="bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold text-lg py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:scale-105">
 						Все посты
 				</a>
 			</div>
 		</div>
-</section>
+	</section>
 @endsection

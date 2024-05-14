@@ -22,7 +22,7 @@ function handleScroll() {
 
     // Debounce настройка
     timeout = setTimeout(() => {
-        if (st > 240) {
+        if (st > 340) {
             scrollBtn.classList.remove('hidden');
             scrollBtn.style.opacity = 1;
         } else {

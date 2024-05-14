@@ -10,3 +10,28 @@ html, body {
 body {
 	flex: 1;
 }
+
+/* Custom scrollbar styles */
+select::-webkit-scrollbar {
+	width: 8px;
+}
+
+select::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 10px;
+}
+
+select::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 10px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Ensure select does not overflow on small screens */
+select {
+	max-width: 100%;
+	box-sizing: border-box;
+}
