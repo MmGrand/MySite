@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
@@ -24,5 +25,8 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
+
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');

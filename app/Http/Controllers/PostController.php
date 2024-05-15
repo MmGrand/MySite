@@ -41,13 +41,17 @@ class PostController extends Controller
 
     public function show($slug)
     {
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $post = Post::where('slug', $slug)->with('comments')->firstOrFail();
         $breadcrumbs = [
             ['title' => 'Главная', 'href' => route('home')],
             ['title' => 'Посты', 'href' => route('posts.index')],
             ['title' => $post->title, 'href' => route('posts.show', ['slug' => $slug])],
         ];
 
-        return view('posts.show', compact('post', 'breadcrumbs'));
+        $post->incrementViewsCount();
+
+        $comments = $post->comments;
+
+        return view('posts.show', compact('post', 'breadcrumbs', 'comments'));
     }
 }

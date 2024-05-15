@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     @stack('css')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="flex flex-col min-h-screen">
     <header class="bg-white bg-opacity-90 fixed top-0 left-0 w-full z-20 shadow-sm">
@@ -56,7 +57,7 @@
     </footer>
 
     <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 z-1000 bg-blue-500 hover:bg-blue-700 text-white text-xl py-2 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
-        🠕 {{ __('Наверх') }}
+        <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     @vite('resources/js/menu.js')

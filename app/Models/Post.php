@@ -44,4 +44,14 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class, 'post_tag');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id')->with('children')->orderBy('created_at', 'desc');
+    }
+
+    public function incrementViewsCount()
+    {
+        $this->increment('views_count');
+    }
 }
