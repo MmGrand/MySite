@@ -56,7 +56,7 @@
         </div>
     </footer>
 
-    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 z-1000 bg-blue-500 hover:bg-blue-700 text-white text-xl py-2 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
+    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 z-1000 bg-blue-500 hover:bg-blue-700 text-white text-xl py-3 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
