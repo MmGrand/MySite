@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\MoonShine\Resources;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
+
+use MoonShine\Resources\ModelResource;
+use MoonShine\Decorations\Block;
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Field;
+use MoonShine\Components\MoonShineComponent;
+use MoonShine\Decorations\Tab;
+use MoonShine\Decorations\Tabs;
+use MoonShine\Fields\Date;
+use MoonShine\Fields\Slug;
+use MoonShine\Fields\Text;
+use MoonShine\Fields\Textarea;
+use MoonShine\Fields\Image;
+use MoonShine\Fields\Number;
+use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Switcher;
+
+/**
+ * @extends ModelResource<Post>
+ */
+class PostResource extends ModelResource
+{
+    protected string $model = Post::class;
+
+    protected string $title = 'Посты';
+
+    /**
+     * @return list<MoonShineComponent|Field>
+     */
+    public function fields(): array
+    {
+        return [
+            Tabs::make([
+                Tab::make('Основная информация',[
+                    Block::make('Основная информация', [
+                        ID::make()->sortable(),
+                        Text::make('Заголовок', 'title')->sortable()->required(),
+                        Slug::make('Slug')->required()->hideOnIndex(),
+                        BelongsTo::make('Автор', 'user', resource: new UserResource()),
+                        Textarea::make('Основной контент', 'main_content')->required()->hideOnIndex(),
+                        Image::make('Основное изображение', 'main_image')->required()->hideOnIndex(),
+                        Date::make('Время создания', 'created_at')->hideOnIndex(),
+                        Switcher::make('Опубликовано', 'is_published')->sortable(),
+                    ]),
+                ]),
+                Tab::make('Побочная информация',[
+                    Block::make('Побочная информация', [
+                        Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
+                        Image::make('Изображение предпросмотра', 'preview_image')->required()->hideOnIndex(),
+                        BelongsTo::make('Категория', 'category', resource: new CategoryResource()),
+                        Number::make('Количество просмотров', 'views_count')->hideOnIndex(),
+                    ]),
+                ]),
+            ])
+        ];
+    }
+
+    /**
+     * @param Post $item
+     *
+     * @return array<string, string[]|string>
+     * @see https://laravel.com/docs/validation#available-validation-rules
+     */
+    public function rules(Model $item): array
+    {
+        return [];
+    }
+}
