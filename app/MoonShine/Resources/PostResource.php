@@ -21,6 +21,8 @@ use MoonShine\Fields\Textarea;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Relationships\BelongsToMany;
+use MoonShine\Fields\Relationships\HasMany;
 use MoonShine\Fields\Switcher;
 
 /**
@@ -31,6 +33,8 @@ class PostResource extends ModelResource
     protected string $model = Post::class;
 
     protected string $title = 'Посты';
+
+    public string $column = 'title';
 
     /**
      * @return list<MoonShineComponent|Field>
@@ -43,10 +47,10 @@ class PostResource extends ModelResource
                     Block::make('Основная информация', [
                         ID::make()->sortable(),
                         Text::make('Заголовок', 'title')->sortable()->required(),
-                        Slug::make('Slug')->required()->hideOnIndex(),
-                        BelongsTo::make('Автор', 'user', resource: new UserResource()),
+                        Slug::make('Slug')->from('title')->unique()->locked()->hideOnIndex(),
+                        BelongsTo::make('Автор', 'user', resource: new UserResource())->searchable()->hideOnIndex(),
                         Textarea::make('Основной контент', 'main_content')->required()->hideOnIndex(),
-                        Image::make('Основное изображение', 'main_image')->required()->hideOnIndex(),
+                        Image::make('Основное изображение', 'main_image')->disk('public')->dir('posts')->required()->hideOnIndex(),
                         Date::make('Время создания', 'created_at')->hideOnIndex(),
                         Switcher::make('Опубликовано', 'is_published')->sortable(),
                     ]),
@@ -54,12 +58,26 @@ class PostResource extends ModelResource
                 Tab::make('Побочная информация',[
                     Block::make('Побочная информация', [
                         Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
-                        Image::make('Изображение предпросмотра', 'preview_image')->required()->hideOnIndex(),
-                        BelongsTo::make('Категория', 'category', resource: new CategoryResource()),
+                        Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts')->required()->hideOnIndex(),
+                        BelongsTo::make('Категория', 'category', resource: new CategoryResource())->searchable()->hideOnIndex(),
+                        BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
+                        HasMany::make('Комментарии', 'comments')->creatable()->hideOnIndex(),
                         Number::make('Количество просмотров', 'views_count')->hideOnIndex(),
                     ]),
                 ]),
             ])
+        ];
+    }
+
+    public function search(): array
+    {
+        return ['id', 'title'];
+    }
+
+    public function filters(): array
+    {
+        return [
+            Text::make('Заголовок', 'title'),
         ];
     }
 

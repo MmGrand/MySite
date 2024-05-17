@@ -9,11 +9,13 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Tag;
+use App\Models\User;
 use App\MoonShine\Resources\CategoryResource;
 use App\MoonShine\Resources\CommentResource;
 use App\MoonShine\Resources\PostResource;
 use App\MoonShine\Resources\ProjectResource;
 use App\MoonShine\Resources\TagResource;
+use App\MoonShine\Resources\UserResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -50,6 +52,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     {
         return [
             MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [
+               MenuItem::make('Пользователи', new UserResource())->icon('heroicons.users')->badge(fn() => User::query()->count()),
                MenuItem::make(
                    static fn() => __('moonshine::ui.resource.admins_title'),
                    new MoonShineUserResource()

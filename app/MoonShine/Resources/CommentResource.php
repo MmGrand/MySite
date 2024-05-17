@@ -12,6 +12,10 @@ use MoonShine\Decorations\Block;
 use MoonShine\Fields\ID;
 use MoonShine\Fields\Field;
 use MoonShine\Components\MoonShineComponent;
+use MoonShine\Fields\Date;
+use MoonShine\Fields\Relationships\BelongsTo;
+use MoonShine\Fields\Text;
+use MoonShine\Fields\Textarea;
 
 /**
  * @extends ModelResource<Comment>
@@ -30,6 +34,11 @@ class CommentResource extends ModelResource
         return [
             Block::make([
                 ID::make()->sortable(),
+                BelongsTo::make('Пост', 'post', resource: new PostResource())->searchable()->hideOnIndex(),
+                BelongsTo::make('Родитель', 'parent', resource: new CommentResource())->searchable()->nullable()->hideOnIndex(),
+                Text::make('Автор', 'author')->sortable()->required(),
+                Textarea::make('Текст комментария', 'content')->required()->hideOnIndex(),
+                Date::make('Время создания', 'created_at')->hideOnIndex(),
             ]),
         ];
     }

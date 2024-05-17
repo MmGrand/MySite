@@ -17,6 +17,7 @@ use MoonShine\Fields\Url;
 use MoonShine\Fields\Text;
 use MoonShine\Fields\Textarea;
 use MoonShine\Fields\Image;
+use MoonShine\Fields\Relationships\BelongsToMany;
 use MoonShine\Fields\Switcher;
 
 /**
@@ -39,10 +40,23 @@ class ProjectResource extends ModelResource
                 Text::make('Заголовок', 'title')->sortable()->required(),
                 Url::make('Ссылка на проект', 'url')->required()->hideOnIndex(),
                 Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
-                Image::make('Изображение предпросмотра', 'preview_image')->required()->hideOnIndex(),
+                Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('projects')->required()->hideOnIndex(),
+                BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
                 Date::make('Время создания', 'created_at')->hideOnIndex(),
                 Switcher::make('Опубликовано', 'is_published')->sortable(),
             ]),
+        ];
+    }
+
+    public function search(): array
+    {
+        return ['id', 'title'];
+    }
+
+    public function filters(): array
+    {
+        return [
+            Text::make('Заголовок', 'title'),
         ];
     }
 
