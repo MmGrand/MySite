@@ -51,7 +51,7 @@
                     <div
                         class="overflow-hidden shadow-lg border border-slate-100 rounded-3xl hover:shadow-2xl transition-shadow duration-300 relative">
                         <a href="{{ route('posts.show', $post->slug) }}">
-                            <img src="{{ $post->preview_image }}" alt="{{ $post->title }}"
+                            <img src="{{ Str::startsWith($post->preview_image, 'http') ? $post->preview_image : Storage::url($post->preview_image) }}" alt="{{ $post->title }}"
                                 class="w-full h-48 object-cover">
                             <div
                                 class="absolute top-0 left-0 bg-gradient-to-r from-green-500 to-blue-500 text-white text-sm px-3 py-1.5 rounded-br-2xl shadow">

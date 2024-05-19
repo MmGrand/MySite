@@ -9,7 +9,7 @@
 
     <x-content-wrapper class="bg-white">
         <article class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="{{ $post->main_image }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
+            <img src="{{ Str::startsWith($post->main_image, 'http') ? $post->main_image : Storage::url($post->main_image) }}" alt="{{ $post->title }}" class="w-full h-64 object-cover">
             <div class="p-6">
                 <h1 class="text-4xl font-bold mb-4 text-gray-900">{{ $post->title }}</h1>
                 <div class="flex items-center mb-4 text-gray-600">

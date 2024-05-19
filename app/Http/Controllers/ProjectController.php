@@ -19,11 +19,11 @@ class ProjectController extends Controller
         $tags = Tag::all();
 
         if ($tagSlug) {
-            $projects = Project::whereHas('tags', function ($query) use ($tagSlug) {
+            $projects = Project::query()->where('is_published', 1)->whereHas('tags', function ($query) use ($tagSlug) {
                 $query->where('slug', $tagSlug);
             })->paginate(12);
         } else {
-            $projects = Project::paginate(12);
+            $projects = Project::query()->where('is_published', 1)->orderBy('created_at', 'desc')->paginate(12);
         }
 
         return view('projects.index', compact('projects', 'breadcrumbs', 'tags', 'tagSlug'));

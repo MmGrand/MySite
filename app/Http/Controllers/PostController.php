@@ -21,7 +21,7 @@ class PostController extends Controller
             ['title' => 'Посты', 'href' => route('posts.index')],
         ];
 
-        $posts = Post::query();
+        $posts = Post::query()->where('is_published', 1);
 
         if ($categorySlug) {
             $category = Category::where('slug', $categorySlug)->firstOrFail();
@@ -34,14 +34,14 @@ class PostController extends Controller
             });
         }
 
-        $posts = $posts->paginate(12);
+        $posts = $posts->orderBy('created_at', 'desc')->paginate(12);
 
         return view('posts.index', compact('posts', 'tags', 'categories', 'tagSlug', 'categorySlug', 'breadcrumbs'));
     }
 
     public function show($slug)
     {
-        $post = Post::where('slug', $slug)->with('comments')->firstOrFail();
+        $post = Post::where('slug', $slug)->where('is_published', 1)->with('comments')->firstOrFail();
         $breadcrumbs = [
             ['title' => 'Главная', 'href' => route('home')],
             ['title' => 'Посты', 'href' => route('posts.index')],

@@ -29,6 +29,7 @@
                 </div>
             </div>
         </div>
+        @if ($projects->isNotEmpty())
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             @foreach ($projects as $project)
                 <div
@@ -55,5 +56,11 @@
         <div class="mt-6">
             {{ $projects->links('vendor.pagination.tailwind') }}
         </div>
+        @else
+            <div class="text-center py-16">
+                <h3 class="text-2xl font-semibold text-gray-800">{{ __('Проекты не найдены') }}</h3>
+                <p class="text-gray-600">{{ __('Попробуйте изменить фильтры или сбросить их.') }}</p>
+            </div>
+        @endif
     </x-content-wrapper>
 @endsection
