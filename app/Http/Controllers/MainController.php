@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::get()->take(6);
-        $posts = Post::get()->take(6);
+        $projects = Project::where('is_published', 1)->orderBy('created_at', 'desc')->take(6)->get();
+        $posts = Post::where('is_published', 1)->orderBy('created_at', 'desc')->take(6)->get();
 
         return view('home', compact('projects', 'posts'));
     }
