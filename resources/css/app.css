@@ -60,29 +60,3 @@ select {
 .animate-bounce {
   animation: bounce 1s infinite;
 }
-
-@keyframes card-hover {
-  from {
-    transform: scale(1) translateY(0) rotate(0deg);
-  }
-  to {
-    transform: scale(1.05) translateY(-8px) rotate(1deg);
-  }
-}
-
-@keyframes img-hover {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.1);
-  }
-}
-
-.card-hover-effect:hover {
-  animation: card-hover 0.5s forwards;
-}
-
-.img-hover-effect:hover {
-  animation: img-hover 0.5s forwards;
-}
