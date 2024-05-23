@@ -18,7 +18,7 @@
         @yield('content')
     </main>
     @include('includes.footer')
-    <button id="scrollTopBtn" class="hidden fixed bottom-4 right-4 z-1000 bg-blue-500 hover:bg-blue-700 text-white text-xl py-3 px-4 rounded-full z-50" style="transition: opacity 0.3s; opacity: 0;">
+    <button id="scrollTopBtn" class="fixed bottom-4 right-4 z-50 bg-blue-500 hover:bg-blue-700 text-white text-2xl py-3 px-4 rounded-full shadow-lg transition-opacity duration-300 opacity-0 hidden">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
