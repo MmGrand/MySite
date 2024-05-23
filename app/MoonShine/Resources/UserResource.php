@@ -40,7 +40,7 @@ class UserResource extends ModelResource
                 Text::make('Имя', 'name')->sortable()->required(),
                 Email::make('Почта', 'email')->hideOnIndex()->required(),
                 Password::make('Пароль', 'password')->hideOnIndex()->required(),
-                PasswordRepeat::make('Подтверждение пароля', 'password_repeat')->hideOnIndex()->required(),
+                PasswordRepeat::make('Подтвердите пароль', 'password_confirmation')->hideOnIndex()->required(),
                 Date::make('Время создания', 'created_at')->hideOnIndex(),
             ]),
         ];
@@ -67,6 +67,10 @@ class UserResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'name' => 'required|string|max:50',
+            'email' => 'required|string|email|max:50',
+            'password' => 'required|string|min:7|confirmed',
+        ];
     }
 }

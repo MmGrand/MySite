@@ -51,6 +51,11 @@ class CommentResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'content' => 'required|string|max:250',
+            'author' => 'required|string|max:50',
+            'post' => 'nullable|integer|exists:posts,id',
+            'parent' => 'nullable|integer|exists:comments,id',
+        ];
     }
 }

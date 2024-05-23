@@ -40,7 +40,7 @@ class ProjectResource extends ModelResource
                 Text::make('Заголовок', 'title')->sortable()->required(),
                 Url::make('Ссылка на проект', 'url')->required()->hideOnIndex(),
                 Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
-                Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('projects')->required()->hideOnIndex(),
+                Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('projects')->hideOnIndex(),
                 BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
                 Date::make('Время создания', 'created_at')->hideOnIndex(),
                 Switcher::make('Опубликовано', 'is_published')->sortable(),
@@ -68,6 +68,14 @@ class ProjectResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'title' => 'required|string|max:50',
+            'url' => 'required|string|url',
+            'preview_content' => 'required|string|max:250',
+            'preview_image' => 'file|image|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
+            'is_published' => 'boolean',
+        ];
     }
 }

@@ -61,6 +61,9 @@ class CategoryResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'name' => 'required|string|max:50',
+            'slug' => 'string|max:50',
+        ];
     }
 }

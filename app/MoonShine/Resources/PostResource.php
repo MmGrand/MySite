@@ -50,7 +50,7 @@ class PostResource extends ModelResource
                         Slug::make('Slug')->from('title')->unique()->locked()->hideOnIndex(),
                         BelongsTo::make('Автор', 'user', resource: new UserResource())->searchable()->hideOnIndex(),
                         Textarea::make('Основной контент', 'main_content')->required()->hideOnIndex(),
-                        Image::make('Основное изображение', 'main_image')->disk('public')->dir('posts')->required()->hideOnIndex(),
+                        Image::make('Основное изображение', 'main_image')->disk('public')->dir('posts')->hideOnIndex(),
                         Date::make('Время создания', 'created_at')->hideOnIndex(),
                         Switcher::make('Опубликовано', 'is_published')->sortable(),
                     ]),
@@ -58,7 +58,7 @@ class PostResource extends ModelResource
                 Tab::make('Побочная информация',[
                     Block::make('Побочная информация', [
                         Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
-                        Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts')->required()->hideOnIndex(),
+                        Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts')->hideOnIndex(),
                         BelongsTo::make('Категория', 'category', resource: new CategoryResource())->searchable()->hideOnIndex(),
                         BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
                         HasMany::make('Комментарии', 'comments')->creatable()->hideOnIndex(),
@@ -89,6 +89,21 @@ class PostResource extends ModelResource
      */
     public function rules(Model $item): array
     {
-        return [];
+        return [
+            'title' => 'required|string|max:50',
+            'slug' => 'nullable|string|max:50',
+            'user' => 'nullable|integer|exists:users,name',
+            'main_content' => 'required|string|max:500',
+            'main_image' => 'nullable|file|image|max:2048',
+            'preview_content' => 'required|string|max:250',
+            'preview_image' => 'nullable|file|image|max:2048',
+            'category' => 'nullable|integer|exists:categories,name',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
+            'comments' => 'nullable|array',
+            'comments.*' => 'integer|exists:comments,id',
+            'views_count' => 'nullable|integer',
+            'is_published' => 'boolean',
+        ];
     }
 }
