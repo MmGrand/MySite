@@ -20,12 +20,14 @@ class AuthController extends Controller
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:50|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'avatar' => 'nullable|file|image|max:2048'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'avatar' => $request->avatar ? $request->avatar->store('avatars', 'public') : null,
         ]);
 
         Auth::login($user);

@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,6 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-
-
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
 
 Route::middleware('guest')->group(function () {
@@ -50,4 +48,10 @@ Route::middleware('guest')->group(function () {
 	Route::get('/reset-password', [ResetPasswordController::class, 'showResetFormWithoutEmail'])->name('password.request.form');
 	Route::post('/reset-password', [ResetPasswordController::class, 'resetWithoutEmail'])->name('password.update.form');
 });
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+	Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+	Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+	Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+	Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
+});

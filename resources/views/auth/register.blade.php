@@ -13,7 +13,7 @@
 
                     <x-errors />
 
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700">{{ __('Имя') }}</label>
@@ -39,6 +39,10 @@
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 class="w-full p-3 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500"
                                 required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="avatar" class="block text-gray-700">{{ __('Аватар') }}</label>
+                            <input type="file" name="avatar" id="avatar" class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div class="text-center">
                             <button type="submit"

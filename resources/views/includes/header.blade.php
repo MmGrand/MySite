@@ -17,12 +17,7 @@
                 <li><a href="{{ route('contacts') }}" class="px-2 py-1 text-sm {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors duration-300">{{ __('Контакты') }}</a></li>
                 @auth
                     <li>
-                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="px-2 py-1 text-sm text-gray-600 hover:text-gray-800 hover:underline transition-colors duration-300">
-                            {{ __('Выход') }}
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                            @csrf
-                        </form>
+                        <a href="{{ route('profile') }}" class="px-2 py-1 text-sm {{ active_link('profile', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors duration-300">{{ __('Профиль') }}</a>
                     </li>
                 @else
                     <li><a href="{{ route('login') }}" class="px-2 py-1 text-sm {{ active_link('login', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Вход') }}</a></li>
@@ -40,12 +35,7 @@
         <li><a href="{{ route('contacts') }}" class="block px-4 py-2 text-sm {{ active_link('contacts', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors duration-300">{{ __('Контакты') }}</a></li>
         @auth
             <li>
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:underline transition-colors duration-300">
-                    {{ __('Выход') }}
-                </a>
-                <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="hidden">
-                    @csrf
-                </form>
+                <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm {{ active_link('profile', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-800 hover:underline transition-colors duration-300">{{ __('Профиль') }}</a>
             </li>
         @else
             <li><a href="{{ route('login') }}" class="block px-4 py-2 text-sm {{ active_link('login', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Вход') }}</a></li>
