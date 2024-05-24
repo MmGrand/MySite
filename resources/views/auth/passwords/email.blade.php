@@ -17,6 +17,8 @@
 									</div>
 							@endif
 
+							<x-errors />
+
 							<form method="POST" action="{{ route('password.email') }}">
 									@csrf
 									<div class="mb-4">

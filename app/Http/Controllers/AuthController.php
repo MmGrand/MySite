@@ -45,13 +45,14 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home');
+        if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
+            return redirect()->intended('/');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        // Если аутентификация не прошла, вернуться обратно с ошибкой
+        return redirect()->back()->withErrors([
+            'email' => 'Неверный email или пароль.',
+        ])->withInput();
     }
 
     public function logout(Request $request)

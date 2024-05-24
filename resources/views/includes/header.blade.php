@@ -26,7 +26,6 @@
                     </li>
                 @else
                     <li><a href="{{ route('login') }}" class="px-2 py-1 text-sm {{ active_link('login', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Вход') }}</a></li>
-                    <li><a href="{{ route('register') }}" class="px-2 py-1 text-sm {{ active_link('register', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Регистрация') }}</a></li>
                 @endauth
             </ul>
         </nav>
@@ -50,7 +49,6 @@
             </li>
         @else
             <li><a href="{{ route('login') }}" class="block px-4 py-2 text-sm {{ active_link('login', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Вход') }}</a></li>
-            <li><a href="{{ route('register') }}" class="block px-4 py-2 text-sm {{ active_link('register', 'text-gray-800') != '' ? 'text-gray-800' : 'text-gray-600' }} hover:text-gray-600 hover:underline transition-colors duration-300">{{ __('Регистрация') }}</a></li>
         @endauth
     </ul>
 </nav>
