@@ -36,7 +36,7 @@ class CommentResource extends ModelResource
                 ID::make()->sortable(),
                 BelongsTo::make('Пост', 'post', resource: new PostResource())->searchable()->hideOnIndex(),
                 BelongsTo::make('Родитель', 'parent', resource: new CommentResource())->searchable()->nullable()->hideOnIndex(),
-                Text::make('Автор', 'author')->sortable()->required(),
+                BelongsTo::make('Автор', 'author', resource: new UserResource())->searchable()->hideOnIndex(),
                 Textarea::make('Текст комментария', 'content')->required()->hideOnIndex(),
                 Date::make('Время создания', 'created_at')->hideOnIndex(),
             ]),
@@ -53,7 +53,7 @@ class CommentResource extends ModelResource
     {
         return [
             'content' => 'required|string|max:250',
-            'author' => 'required|string|max:50',
+            'author_id' => 'nullable|integer|exists:users,id',
             'post' => 'nullable|integer|exists:posts,id',
             'parent' => 'nullable|integer|exists:comments,id',
         ];

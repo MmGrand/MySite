@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('preview_image')->nullable();
             $table->string('main_image')->nullable();
             $table->boolean('is_published')->default(false);
-            $table->unsignedBigInteger('views_count')->default(0);
+            $table->unsignedBigInteger('views_count')->nullable()->default(0);
 
             $table->timestamps();
         });

@@ -17,6 +17,7 @@ use MoonShine\Fields\Email;
 use MoonShine\Fields\Password;
 use MoonShine\Fields\PasswordRepeat;
 use MoonShine\Fields\Text;
+use MoonShine\Fields\Relationships\HasMany;
 
 /**
  * @extends ModelResource<User>
@@ -42,6 +43,7 @@ class UserResource extends ModelResource
                 Password::make('Пароль', 'password')->hideOnIndex()->required(),
                 PasswordRepeat::make('Подтвердите пароль', 'password_confirmation')->hideOnIndex()->required(),
                 Date::make('Время создания', 'created_at')->hideOnIndex(),
+                HasMany::make('Посты', 'posts', resource: new PostResource())->creatable()->hideOnIndex(),
             ]),
         ];
     }
@@ -71,6 +73,8 @@ class UserResource extends ModelResource
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:50',
             'password' => 'required|string|min:7|confirmed',
+            'posts' => 'nullable|array',
+            'posts.*' => 'integer|exists:post,id',
         ];
     }
 }

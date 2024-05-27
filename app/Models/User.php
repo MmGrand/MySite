@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, 'author_id', 'id')->orderBy('created_at', 'desc');
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

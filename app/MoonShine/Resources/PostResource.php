@@ -61,7 +61,7 @@ class PostResource extends ModelResource
                         Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts')->hideOnIndex(),
                         BelongsTo::make('Категория', 'category', resource: new CategoryResource())->searchable()->hideOnIndex(),
                         BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
-                        HasMany::make('Комментарии', 'comments')->creatable()->hideOnIndex(),
+                        HasMany::make('Комментарии', 'comments', resource: new CommentResource())->creatable()->hideOnIndex(),
                         Number::make('Количество просмотров', 'views_count')->hideOnIndex(),
                     ]),
                 ]),
@@ -92,7 +92,7 @@ class PostResource extends ModelResource
         return [
             'title' => 'required|string|max:50',
             'slug' => 'nullable|string|max:50',
-            'user' => 'nullable|integer|exists:users,name',
+            'user_id' => 'nullable|integer|exists:users,id',
             'main_content' => 'required|string|max:500',
             'main_image' => 'nullable|file|image|max:2048',
             'preview_content' => 'required|string|max:250',
