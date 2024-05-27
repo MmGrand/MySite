@@ -12,14 +12,14 @@
         <p class="text-xl md:text-2xl mb-8 animate-fade-in text-gray-900">
             {{ __('Здесь вы найдете мои проекты, посты и подробности моего профессионального пути.') }}
         </p>
-        <x-button text="{{ __('Узнать больше') }}" route="about" />
+        <x-button :route="'about'" :text="__('Узнать больше')" :type="'link'" :classes="''" />
     </x-content-wrapper>
 
     <x-content-wrapper class="bg-white">
         <h2 class="text-3xl font-bold text-center mb-6">{{ __('Мои проекты') }}</h2>
         <x-project-list :projects="$projects" columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" gap="gap-6" />
         <div class="text-center mt-8">
-            <x-button text="{{ __('Все проекты') }}" route="projects.index" />
+            <x-button :route="'projects.index'" :text="__('Все проекты')" :type="'link'" :classes="''" />
         </div>
     </x-content-wrapper>
 
@@ -27,7 +27,7 @@
         <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Мои посты') }}</h2>
         <x-post-list :posts="$posts" columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" gap="gap-6" />
         <div class="text-center mt-8">
-            <x-button text="{{ __('Все посты') }}" route="posts.index" />
+            <x-button :route="'posts.index'" :text="__('Все посты')" :type="'link'" :classes="''" />
         </div>
     </x-content-wrapper>
 @endsection

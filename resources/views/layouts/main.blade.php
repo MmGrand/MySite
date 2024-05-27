@@ -7,6 +7,7 @@
     <title>@yield('title', config('app.name', 'Laravel'))</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     @vite('resources/css/app.css')
+    @vite('resources/css/alert.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     @stack('css')
@@ -14,6 +15,7 @@
 </head>
 <body class="flex flex-col min-h-screen">
     @include('includes.header')
+    <x-alert />
     <main class="flex-grow">
         @yield('content')
     </main>
@@ -23,6 +25,7 @@
     </button>
 
     @vite('resources/js/menu.js')
+    @vite('resources/js/app.js')
     @stack('js')
 </body>
 </html>

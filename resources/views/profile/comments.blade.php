@@ -45,6 +45,35 @@
                             .catch(error => console.error('Error loading more comments:', error));
                     }
                 });
+
+                document.getElementById('avatarForm').addEventListener('submit', function(e) {
+                    const avatarInput = document.getElementById('avatar_update');
+                    const avatarError = document.getElementById('avatarError');
+                    const avatarErrorServer = document.getElementById('avatarErrorServer');
+
+                    if (!avatarInput.files.length) {
+                        e.preventDefault();
+                        avatarError.textContent = "{{ __('Пожалуйста, выберите фото.') }}";
+                        avatarError.classList.remove('hidden');
+                        if (avatarErrorServer) {
+                            avatarErrorServer.classList.add('hidden');
+                        }
+                    } else {
+                        avatarError.classList.add('hidden');
+                        if (avatarErrorServer) {
+                            avatarErrorServer.classList.add('hidden');
+                        }
+                    }
+                });
+
+                document.getElementById('avatar_update').addEventListener('click', function() {
+                    const avatarError = document.getElementById('avatarError');
+                    const avatarErrorServer = document.getElementById('avatarErrorServer');
+                    avatarError.classList.add('hidden');
+                    if (avatarErrorServer) {
+                        avatarErrorServer.classList.add('hidden');
+                    }
+                });
             });
         </script>
     @endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,8 +48,9 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->remember)) {
-            return redirect()->intended('/');
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials, $request->remember)) {
+            return redirect()->intended(RouteServiceProvider::HOME);
         }
 
         // Если аутентификация не прошла, вернуться обратно с ошибкой

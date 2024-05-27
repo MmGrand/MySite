@@ -22,16 +22,18 @@ class ProfileController extends Controller
     public function updateAvatar(Request $request)
     {
         $request->validate([
-            'avatar' => 'nullable|file|image|max:2048',
+            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $user = Auth::user();
         if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
             $user->save();
+
+            return back()->with('success', 'Аватар успешно обновлен.');
         }
 
-        return redirect()->back()->with('success', 'Фото профиля обновлено.');
+        return back()->withErrors(['avatar' => 'Пожалуйста, выберите допустимое изображение.']);
     }
 }

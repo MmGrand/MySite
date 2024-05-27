@@ -5,48 +5,42 @@
 @endsection
 
 @section('content')
-    @if (session('success'))
-        <div class="bg-green-500 text-white text-center pt-20 pb-5 px-4 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <x-content-wrapper class="bg-white">
         <section class="py-12">
             <div class="container mx-auto px-4">
                 <div class="max-w-3xl mx-auto bg-gray-100 shadow-lg rounded-lg p-6">
                     <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Личный кабинет') }}</h2>
-                    <div class="text-center mb-6">
-                        @if ($user->avatar)
-                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}"
-                                class="w-24 h-24 rounded-full mx-auto">
-                        @else
-                            <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}"
-                                class="w-24 h-24 rounded-full mx-auto">
-                        @endif
-                        <h3 class="text-xl font-semibold text-gray-800 mt-4">{{ $user->name }}</h3>
 
-                        <form method="POST" action="{{ route('profile.update_avatar') }}" enctype="multipart/form-data"
-                            class="mt-4">
+                    <div class="text-center mb-6 bg-white p-6 rounded-lg shadow-md">
+                        @if ($user->avatar)
+                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                        @else
+                            <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                        @endif
+                        <h3 class="text-2xl font-semibold text-gray-900 mt-4">{{ $user->name }}</h3>
+                        <p class="text-gray-600 mt-2">{{ $user->email }}</p>
+
+                        <form method="POST" action="{{ route('profile.update_avatar') }}" enctype="multipart/form-data" class="mt-4" id="avatarForm">
                             @csrf
                             <div class="mb-4">
-                                <label for="avatar" class="block text-gray-700">{{ __('Обновить фото') }}</label>
-                                <input type="file" name="avatar" id="avatar"
-                                    class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <x-label for="avatar" :value="__('Сменить аватар')" classes="text-lg font-semibold mb-2" />
+                                <x-file-input :name="'avatar'" :id="'avatar_update'" :displayText="__('Нажмите, чтобы выбрать фото')" classes="mt-1" />
+                                <p id="avatarError" class="text-red-500 text-sm mt-2 hidden">{{ __('Пожалуйста, выберите фото.') }}</p>
+                                @error('avatar')
+                                    <p id="avatarErrorServer" class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
-                                <button type="submit"
-                                    class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300">{{ __('Обновить') }}</button>
+                                <x-button :route="''" :text="__('Обновить')" :type="'button'" :buttonType="'submit'" classes="" />
                             </div>
                         </form>
-                    </div>
 
-                    <div class="text-center mb-6">
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit"
-                                class="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition duration-300">{{ __('Выход') }}</button>
-                        </form>
+                        <div class="text-center mt-4">
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <x-link :type="'button'" :buttonType="'submit'" :text="__('Выйти')" />
+                            </form>
+                        </div>
                     </div>
 
                     <div class="bg-white shadow-lg rounded-lg overflow-hidden p-6 mb-8" id="comments-container">

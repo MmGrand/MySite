@@ -62,7 +62,7 @@ class PostResource extends ModelResource
                         BelongsTo::make('Категория', 'category', resource: new CategoryResource())->searchable()->hideOnIndex(),
                         BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
                         HasMany::make('Комментарии', 'comments', resource: new CommentResource())->creatable()->hideOnIndex(),
-                        Number::make('Количество просмотров', 'views_count')->hideOnIndex(),
+                        Number::make('Количество просмотров', 'views_count')->default(0)->hideOnIndex(),
                     ]),
                 ]),
             ])

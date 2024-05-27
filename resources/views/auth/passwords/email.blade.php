@@ -11,24 +11,16 @@
 					<div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg p-6">
 							<h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Сброс пароля') }}</h2>
 
-							@if (session('status'))
-									<div class="mb-4 text-green-600">
-											{{ session('status') }}
-									</div>
-							@endif
-
 							<x-errors />
 
 							<form method="POST" action="{{ route('password.email') }}">
 									@csrf
 									<div class="mb-4">
-											<label for="email" class="block text-gray-700">{{ __('Email') }}</label>
-											<input type="email" name="email" id="email" class="w-full p-3 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500" value="{{ old('email') }}" required>
+											<x-label for="email" :value="__('Укажите вашу почту')" />
+											<x-input type="email" id="email" name="email" :value="old('email')" required />
 									</div>
 									<div class="text-center">
-											<button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">
-													{{ __('Отправить ссылку для сброса пароля') }}
-											</button>
+											<x-button :route="''" :text="__('Отправить ссылку для сброса пароля')" :type="'button'" :buttonType="'submit'" classes="w-full" />
 									</div>
 							</form>
 					</div>

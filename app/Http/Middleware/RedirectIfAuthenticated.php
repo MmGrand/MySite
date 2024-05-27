@@ -25,6 +25,11 @@ class RedirectIfAuthenticated
             }
         }
 
+        // Сохранение URL в сессии
+        if (!$request->expectsJson() && !session()->has('url.intended')) {
+            session(['url.intended' => url()->previous()]);
+        }
+
         return $next($request);
     }
 }

@@ -1,0 +1,36 @@
+.alert {
+	position: fixed;
+	top: 60px;
+	right: 20px;
+	z-index: 1050;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	min-width: 300px;
+	max-width: calc(100% - 40px); /* Адаптивное значение */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	transition: opacity 0.5s, transform 0.5s;
+	opacity: 1;
+}
+
+.alert-success {
+	background-color: #38a169;
+	color: white;
+}
+
+.alert-error {
+	background-color: #e53e3e;
+	color: white;
+}
+
+.alert-warning {
+	background-color: #dd6b20;
+	color: white;
+}
+
+.alert-info {
+	background-color: #3182ce;
+	color: white;
+}
