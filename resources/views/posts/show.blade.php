@@ -65,7 +65,7 @@
                             <div class="flex items-start">
                                 <img src="{{ $comment->author->avatar ? Storage::url($comment->author->avatar) : asset('images/default-avatar.png') }}"
                                     alt="{{ $comment->author->name }}" class="w-10 h-10 rounded-full mr-4">
-                                <div>
+                                <div class="flex-1 w-full">
                                     <div class="text-sm text-gray-500">{{ $comment->author->name }} -
                                         {{ $comment->created_at->format('d.m.Y, H:i') }}</div>
                                     <div class="mt-1 text-gray-700">{{ $comment->content }}</div>
@@ -73,8 +73,9 @@
                                         <button onclick="toggleReplyForm({{ $comment->id }});"
                                             class="text-blue-500 text-sm hover:underline">{{ __('Ответить') }}</button>
                                     @endauth
-                                    <div id="reply-form-{{ $comment->id }}" class="hidden mt-4">
-                                        <form class="reply-form" method="POST" action="{{ route('comments.store') }}">
+                                    <div id="reply-form-{{ $comment->id }}" class="hidden mt-4 w-full">
+                                        <form class="reply-form w-full" method="POST"
+                                            action="{{ route('comments.store') }}">
                                             @csrf
                                             <input type="hidden" name="post_id" value="{{ $post->id }}">
                                             <input type="hidden" name="parent_id" value="{{ $comment->id }}">
@@ -97,10 +98,36 @@
                                                     <img src="{{ $child->author->avatar ? Storage::url($child->author->avatar) : asset('images/default-avatar.png') }}"
                                                         alt="{{ $child->author->name }}"
                                                         class="w-10 h-10 rounded-full mr-4">
-                                                    <div>
+                                                    <div class="flex-1 w-full">
                                                         <div class="text-sm text-gray-500">{{ $child->author->name }} -
                                                             {{ $child->created_at->format('d.m.Y, H:i') }}</div>
                                                         <div class="mt-1 text-gray-700">{{ $child->content }}</div>
+                                                        {{-- @auth
+                                                            <button onclick="toggleReplyForm({{ $child->id }});"
+                                                                class="text-blue-500 text-sm hover:underline">{{ __('Ответить') }}</button>
+                                                            <div id="reply-form-{{ $child->id }}"
+                                                                class="hidden mt-4 w-full">
+                                                                <form class="reply-form w-full" method="POST"
+                                                                    action="{{ route('comments.store') }}">
+                                                                    @csrf
+                                                                    <input type="hidden" name="post_id"
+                                                                        value="{{ $post->id }}">
+                                                                    <input type="hidden" name="parent_id"
+                                                                        value="{{ $child->id }}">
+                                                                    <div class="mb-4">
+                                                                        <label for="content-{{ $child->id }}"
+                                                                            class="block text-gray-700">{{ __('Комментарий') }}</label>
+                                                                        <textarea name="content" id="content-{{ $child->id }}" rows="2"
+                                                                            class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                                                                    </div>
+                                                                    <div>
+                                                                        <x-button :route="''" :text="__('Отправить')"
+                                                                            :type="'button'" :buttonType="'submit'"
+                                                                            :classes="''" />
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        @endauth --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,33 +166,38 @@
                                     .author.avatar ?
                                     `/storage/${response.comment.author.avatar}` :
                                     '/images/default-avatar.png';
-                                $('#comments-container').prepend(
-                                    `<div class="mb-4" id="comment-${response.comment.id}">
-                                                <div class="flex items-start">
-                                                    <img src="${authorAvatar}" alt="${authorName}" class="w-10 h-10 rounded-full mr-4">
-                                                    <div>
-                                                        <div class="text-sm text-gray-500">${authorName} - ${new Date(response.comment.created_at).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Moscow' })}</div>
-                                                        <div class="mt-1 text-gray-700">${response.comment.content}</div>
-                                                        <button onclick="toggleReplyForm(${response.comment.id});" class="text-blue-500 text-sm hover:underline">Ответить</button>
-                                                        <div id="reply-form-${response.comment.id}" class="hidden mt-4">
-                                                            <form class="reply-form" method="POST" action="{{ route('comments.store') }}">
-                                                                @csrf
-                                                                <input type="hidden" name="post_id" value="${ response.comment.post_id }">
-                                                                <input type="hidden" name="parent_id" value="${response.comment.id}">
-                                                                <div class="mb-4">
-                                                                    <label for="content-${response.comment.id}" class="block text-gray-700">Комментарий</label>
-                                                                    <textarea name="content" id="content-${response.comment.id}" rows="2" class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
-                                                                </div>
-                                                                <div>
-                                                                    <x-button :route="''" :text="__('Отправить')" :type="'button'" :buttonType="'submit'" :classes="''" />
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="ml-4 mt-4" id="child-comments-${response.comment.id}"></div>
+                                const newCommentHtml = `
+                                <div class="mb-4" id="comment-${response.comment.id}">
+                                    <div class="flex items-start">
+                                        <img src="${authorAvatar}" alt="${authorName}" class="w-10 h-10 rounded-full mr-4">
+                                        <div class="flex-1 w-full">
+                                            <div class="text-sm text-gray-500">${authorName} - ${new Date(response.comment.created_at).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Moscow' })}</div>
+                                            <div class="mt-1 text-gray-700">${response.comment.content}</div>
+                                            <button onclick="toggleReplyForm(${response.comment.id});" class="text-blue-500 text-sm hover:underline">{{ __('Ответить') }}</button>
+                                            <div id="reply-form-${response.comment.id}" class="hidden mt-4 w-full">
+                                                <form class="reply-form w-full" method="POST" action="{{ route('comments.store') }}">
+                                                    @csrf
+                                                    <input type="hidden" name="post_id" value="${response.comment.post_id}">
+                                                    <input type="hidden" name="parent_id" value="${response.comment.id}">
+                                                    <div class="mb-4">
+                                                        <label for="content-${response.comment.id}" class="block text-gray-700">{{ __('Комментарий') }}</label>
+                                                        <textarea name="content" id="content-${response.comment.id}" rows="2"
+                                                            class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                            required></textarea>
                                                     </div>
-                                                </div>
-                                            </div>`
-                                );
+                                                    <div>
+                                                        <x-button :route="''" :text="__('Отправить')" :type="'button'"
+                                                            :buttonType="'submit'" :classes="''" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="ml-4 mt-4" id="child-comments-${response.comment.id}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                                $('#comments-container').prepend(newCommentHtml);
                             }
                         },
                         error: function(xhr) {
@@ -193,17 +225,21 @@
                                     .author.avatar ?
                                     `/storage/${response.comment.author.avatar}` :
                                     '/images/default-avatar.png';
+                                const newReplyHtml = `
+                                <div class="mb-4" id="comment-${response.comment.id}">
+                                    <div class="flex items-start">
+                                        <img src="${authorAvatar}" alt="${authorName}" class="w-10 h-10 rounded-full mr-4">
+                                        <div class="flex-1 w-full">
+                                            <div class="text-sm text-gray-500">${authorName} - ${new Date(response.comment.created_at).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Moscow' })}</div>
+                                            <div class="mt-1 text-gray-700">${response.comment.content}</div>
+                                            <button onclick="toggleReplyForm(${response.comment.id});" class="text-blue-500 text-sm hover:underline">{{ __('Ответить') }}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
                                 $('#child-comments-' + response.comment.parent_id).append(
-                                    `<div class="mb-4" id="comment-${response.comment.id}">
-                                                <div class="flex items-start">
-                                                    <img src="${authorAvatar}" alt="${authorName}" class="w-10 h-10 rounded-full mr-4">
-                                                    <div>
-                                                        <div class="text-sm text-gray-500">${authorName} - ${new Date(response.comment.created_at).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit', year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Europe/Moscow' })}</div>
-                                                        <div class="mt-1 text-gray-700">${response.comment.content}</div>
-                                                    </div>
-                                                </div>
-                                            </div>`
-                                );
+                                    newReplyHtml);
                             }
                         },
                         error: function(xhr) {
