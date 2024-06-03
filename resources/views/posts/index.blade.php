@@ -67,6 +67,12 @@
                 } else {
                     params.delete(type);
                 }
+
+                // Сбрасываем параметр страницы
+                if (params.has('page')) {
+                    params.delete('page');
+                }
+
                 window.location.search = params.toString();
             }
         </script>

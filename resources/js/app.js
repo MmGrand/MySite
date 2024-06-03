@@ -1,4 +1,10 @@
 import './bootstrap';
+// Импортируйте основные стили
+import '../css/app.css';
+import '../css/alert.css';
+
+// Импортируйте дополнительные скрипты
+import './menu.js';
 
 document.addEventListener('DOMContentLoaded', function() {
 	const alerts = document.querySelectorAll('.alert');

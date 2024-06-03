@@ -51,6 +51,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 	Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+	Route::get('/load-more', [CommentController::class, 'loadMoreComments'])->name('comments.load_more');
+	Route::get('/load_more_replies', [CommentController::class, 'loadMoreReplies'])->name('comments.load_more_replies');
+
 	Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 	Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
