@@ -6,39 +6,38 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comment;
-
-use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Textarea;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Textarea;
 
 /**
- * @extends ModelResource<Comment>
+ * @extends BaseModelResource<Comment>
  */
-class CommentResource extends ModelResource
+class CommentResource extends BaseModelResource
 {
     protected string $model = Comment::class;
 
     protected string $title = 'Комментарии';
 
-    /**
-     * @return list<MoonShineComponent|Field>
-     */
-    public function fields(): array
+    protected function indexFields(): iterable
     {
         return [
-            Block::make([
+            ID::make()->sortable(),
+        ];
+    }
+
+    protected function formFields(): iterable
+    {
+        return [
+            Box::make([
                 ID::make()->sortable(),
-                BelongsTo::make('Пост', 'post', resource: new PostResource())->searchable()->hideOnIndex(),
-                BelongsTo::make('Родитель', 'parent', resource: new CommentResource())->searchable()->nullable()->hideOnIndex(),
-                BelongsTo::make('Автор', 'author', resource: new UserResource())->searchable()->hideOnIndex(),
-                Textarea::make('Текст комментария', 'content')->required()->hideOnIndex(),
-                Date::make('Время создания', 'created_at')->hideOnIndex(),
+                BelongsTo::make('Пост', 'post', resource: PostResource::class)->searchable(),
+                BelongsTo::make('Родитель', 'parent', resource: self::class)->searchable()->nullable(),
+                BelongsTo::make('Автор', 'author', resource: UserResource::class)->searchable(),
+                Textarea::make('Текст комментария', 'content')->required(),
+                Date::make('Время создания', 'created_at'),
             ]),
         ];
     }
@@ -49,7 +48,7 @@ class CommentResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    public function validationRules(Model $item): array
     {
         return [
             'content' => 'required|string|max:250',

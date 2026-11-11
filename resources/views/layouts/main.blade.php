@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', config('app.name', 'Laravel'))</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    @vite('resources/css/app.css')
-    @vite('resources/css/alert.css')
+    @vite('resources/js/app.js')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     @stack('css')
@@ -24,8 +23,6 @@
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
-    @vite('resources/js/menu.js')
-    @vite('resources/js/app.js')
     @stack('js')
 </body>
 </html>

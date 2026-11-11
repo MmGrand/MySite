@@ -6,23 +6,19 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-
-use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\Email;
-use MoonShine\Fields\Password;
-use MoonShine\Fields\PasswordRepeat;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\Email;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\PasswordRepeat;
+use MoonShine\UI\Fields\Text;
 
 /**
- * @extends ModelResource<User>
+ * @extends BaseModelResource<User>
  */
-class UserResource extends ModelResource
+class UserResource extends BaseModelResource
 {
     protected string $model = User::class;
 
@@ -30,30 +26,35 @@ class UserResource extends ModelResource
 
     public string $column = 'name';
 
-    /**
-     * @return list<MoonShineComponent|Field>
-     */
-    public function fields(): array
+    protected function indexFields(): iterable
     {
         return [
-            Block::make([
+            ID::make()->sortable(),
+            Text::make('Имя', 'name')->sortable()->required(),
+        ];
+    }
+
+    protected function formFields(): iterable
+    {
+        return [
+            Box::make([
                 ID::make()->sortable(),
                 Text::make('Имя', 'name')->sortable()->required(),
-                Email::make('Почта', 'email')->hideOnIndex()->required(),
-                Password::make('Пароль', 'password')->hideOnIndex()->required(),
-                PasswordRepeat::make('Подтвердите пароль', 'password_confirmation')->hideOnIndex()->required(),
-                Date::make('Время создания', 'created_at')->hideOnIndex(),
-                HasMany::make('Посты', 'posts', resource: new PostResource())->creatable()->hideOnIndex(),
+                Email::make('Почта', 'email')->required(),
+                Password::make('Пароль', 'password')->required(),
+                PasswordRepeat::make('Подтвердите пароль', 'password_confirmation')->required(),
+                Date::make('Время создания', 'created_at'),
+                HasMany::make('Посты', 'posts', resource: PostResource::class)->creatable(),
             ]),
         ];
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return ['id', 'name'];
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         return [
             Text::make('Имя', 'name'),
@@ -67,7 +68,7 @@ class UserResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    public function validationRules(Model $item): array
     {
         return [
             'name' => 'required|string|max:50',

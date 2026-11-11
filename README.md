@@ -19,6 +19,7 @@
 
 ## Используемые технологии
 
+- **PHP:** 8.2 или новее.
 - **Laravel:** Фреймворк для разработки веб-приложений на PHP.
 - **MySQL:** Система управления базами данных для хранения информации.
 - **Tailwind:** Утилитарный CSS фреймворк для быстрой стилизации.
@@ -29,37 +30,49 @@
 
 ## Установка
 
-Пошаговые инструкции по установке и настройке моего проекта.
+### Запуск через Docker
 
-1. Клонируйте репозиторий:
+Для запуска нужны PHP 8.2+ и Composer (для установки PHP-зависимостей), Node.js 18+ и npm, а также Docker Desktop.
+
+1. Клонируйте репозиторий и перейдите в его папку:
    ```sh
    git clone https://github.com/MmGrand/MySite.git
-   ```
-2. Перейдите в папку:
-   ```sh
    cd MySite
    ```
-3. Скопируйте env и настройте под себя:
+2. Создайте `.env`, только если его ещё нет, и установите зависимости:
+   ```sh
+   cp .env.example .env
+   composer install
+   npm ci
+   ```
+   В PowerShell вместо `cp` можно выполнить `Copy-Item .env.example .env`.
+3. Сгенерируйте ключ приложения:
     ```sh
-    cp .env.example .env
+    php artisan key:generate
     ```
-4. Откройте её в вашем IDE и запустите эту команду:
-    ```sh
-    composer install
-    ```
-5. Если у вас есть docker, используйте:
-    ```sh
-    ./vendor/bin/sail up
-    ```
-6. Иначе можете настроить свой docker или запустить в приложении для локальной разработки, как open server panel.
-7. Запустите работу vite:
-    ```sh
-    npm run dev
-    ```
-8. Запустите установку миграций с заполнением:
-    ```sh
-    (./vendor/bin/sail) php artisan migrate --seed
-    ```
+4. Для Docker-профиля в `.env` установите значения БД:
+   ```dotenv
+   DB_CONNECTION=mysql
+   DB_HOST=mysql
+   DB_PORT=3306
+   DB_DATABASE=laravel
+   DB_USERNAME=sail
+   DB_PASSWORD=password
+   ```
+   Адрес `mysql` используется между контейнерами; `127.0.0.1` внутри контейнера Laravel указывает на сам Laravel, а не на MySQL. Пароль здесь приведён для локальной разработки — при необходимости замените его.
+
+   Если том MySQL уже создан, изменение `DB_USERNAME` или `DB_PASSWORD` в `.env` не меняет существующих пользователей и пароли в базе. Используйте действующие учётные данные или измените их в MySQL; удаление тома уничтожит его данные.
+5. Соберите фронтенд и запустите контейнеры:
+   ```sh
+   npm run build
+   docker compose up -d --build
+   docker compose exec laravel.test php artisan migrate --seed
+   docker compose exec laravel.test php artisan moonshine:user
+   ```
+   Последняя команда создаст учётную запись для входа в админ-панель `/admin`.
+6. Откройте `http://localhost`. Если порт 80 занят, задайте `APP_PORT=8000` в `.env` и откройте `http://localhost:8000`.
+
+Для разработки с Vite используйте `npm run dev` вместо `npm run build`. Если запускаете Laravel вне Docker, укажите в `.env` адрес и реквизиты локальной MySQL, затем выполните `php artisan migrate --seed`, `php artisan moonshine:user` и `php artisan serve`.
 
 ## Контакты
 

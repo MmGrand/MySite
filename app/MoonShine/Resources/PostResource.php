@@ -6,29 +6,25 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Post;
-
-use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
-use MoonShine\Decorations\Tab;
-use MoonShine\Decorations\Tabs;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\Slug;
-use MoonShine\Fields\Text;
-use MoonShine\Fields\Textarea;
-use MoonShine\Fields\Image;
-use MoonShine\Fields\Number;
-use MoonShine\Fields\Relationships\BelongsTo;
-use MoonShine\Fields\Relationships\BelongsToMany;
-use MoonShine\Fields\Relationships\HasMany;
-use MoonShine\Fields\Switcher;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\BelongsToMany;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Fields\Slug;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Tabs;
+use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Image;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 
 /**
- * @extends ModelResource<Post>
+ * @extends BaseModelResource<Post>
  */
-class PostResource extends ModelResource
+class PostResource extends BaseModelResource
 {
     protected string $model = Post::class;
 
@@ -36,45 +32,51 @@ class PostResource extends ModelResource
 
     public string $column = 'title';
 
-    /**
-     * @return list<MoonShineComponent|Field>
-     */
-    public function fields(): array
+    protected function indexFields(): iterable
+    {
+        return [
+            ID::make()->sortable(),
+            Text::make('Заголовок', 'title')->sortable()->required(),
+            Switcher::make('Опубликовано', 'is_published')->sortable(),
+        ];
+    }
+
+    protected function formFields(): iterable
     {
         return [
             Tabs::make([
                 Tab::make('Основная информация',[
-                    Block::make('Основная информация', [
+                    Box::make('Основная информация', [
                         ID::make()->sortable(),
                         Text::make('Заголовок', 'title')->sortable()->required(),
-                        Slug::make('Slug')->from('title')->unique()->locked()->hideOnIndex(),
-                        BelongsTo::make('Автор', 'user', resource: new UserResource())->searchable()->hideOnIndex(),
-                        Textarea::make('Основной контент', 'main_content')->required()->hideOnIndex(),
-                        Image::make('Основное изображение', 'main_image')->disk('public')->dir('posts')->hideOnIndex(),
-                        Date::make('Время создания', 'created_at')->hideOnIndex(),
+                        Slug::make('Slug')->from('title')->unique()->locked(),
+                        BelongsTo::make('Автор', 'user', resource: UserResource::class)->searchable(),
+                        Textarea::make('Основной контент', 'main_content')->required(),
+                        Image::make('Основное изображение', 'main_image')->disk('public')->dir('posts'),
+                        Date::make('Время создания', 'created_at'),
                         Switcher::make('Опубликовано', 'is_published')->sortable(),
                     ]),
                 ]),
                 Tab::make('Побочная информация',[
-                    Block::make('Побочная информация', [
-                        Textarea::make('Контент предпросмотра', 'preview_content')->required()->hideOnIndex(),
-                        Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts')->hideOnIndex(),
-                        BelongsTo::make('Категория', 'category', resource: new CategoryResource())->searchable()->hideOnIndex(),
-                        BelongsToMany::make('Тэги', 'tags')->hideOnIndex()->selectMode(),
-                        HasMany::make('Комментарии', 'comments', resource: new CommentResource())->creatable()->hideOnIndex(),
-                        Number::make('Количество просмотров', 'views_count')->default(0)->hideOnIndex(),
+                    Box::make('Побочная информация', [
+                        Textarea::make('Контент предпросмотра', 'preview_content')->required(),
+                        Image::make('Изображение предпросмотра', 'preview_image')->disk('public')->dir('posts'),
+                        BelongsTo::make('Категория', 'category', resource: CategoryResource::class)->searchable(),
+                        BelongsToMany::make('Тэги', 'tags')->selectMode(),
+                        HasMany::make('Комментарии', 'comments', resource: CommentResource::class)->creatable(),
+                        Number::make('Количество просмотров', 'views_count')->default(0),
                     ]),
                 ]),
             ])
         ];
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return ['id', 'title'];
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         return [
             Text::make('Заголовок', 'title'),
@@ -87,7 +89,7 @@ class PostResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    public function validationRules(Model $item): array
     {
         return [
             'title' => 'required|string|max:50',

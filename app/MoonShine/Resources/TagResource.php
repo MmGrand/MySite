@@ -6,20 +6,16 @@ namespace App\MoonShine\Resources;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
-
-use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
-use MoonShine\Fields\Date;
-use MoonShine\Fields\Slug;
-use MoonShine\Fields\Text;
+use MoonShine\Laravel\Fields\Slug;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Date;
+use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Text;
 
 /**
- * @extends ModelResource<Tag>
+ * @extends BaseModelResource<Tag>
  */
-class TagResource extends ModelResource
+class TagResource extends BaseModelResource
 {
     protected string $model = Tag::class;
 
@@ -27,27 +23,32 @@ class TagResource extends ModelResource
 
     public string $column = 'name';
 
-    /**
-     * @return list<MoonShineComponent|Field>
-     */
-    public function fields(): array
+    protected function indexFields(): iterable
     {
         return [
-            Block::make([
+            ID::make()->sortable(),
+            Text::make('Заголовок', 'name')->sortable()->required(),
+        ];
+    }
+
+    protected function formFields(): iterable
+    {
+        return [
+            Box::make([
                 ID::make()->sortable(),
                 Text::make('Заголовок', 'name')->sortable()->required(),
-                Slug::make('Slug')->from('name')->unique()->locked()->hideOnIndex(),
-                Date::make('Время создания', 'created_at')->hideOnIndex(),
+                Slug::make('Slug')->from('name')->unique()->locked(),
+                Date::make('Время создания', 'created_at'),
             ]),
         ];
     }
 
-    public function search(): array
+    protected function search(): array
     {
         return ['id', 'name'];
     }
 
-    public function filters(): array
+    protected function filters(): array
     {
         return [
             Text::make('Заголовок', 'name'),
@@ -60,7 +61,7 @@ class TagResource extends ModelResource
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
      */
-    public function rules(Model $item): array
+    public function validationRules(Model $item): array
     {
         return [
             'name' => 'required|string|max:50',
