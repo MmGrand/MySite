@@ -1,16 +1,18 @@
 .alert {
 	position: fixed;
-	top: 60px;
-	right: 20px;
+	top: 76px;
+	right: 1.25rem;
 	z-index: 1050;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem;
-	border-radius: 0.5rem;
-	min-width: 300px;
-	max-width: calc(100% - 40px); /* Адаптивное значение */
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-radius: 0.85rem;
+	min-width: min(300px, calc(100% - 2.5rem));
+	max-width: calc(100% - 2.5rem);
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+	backdrop-filter: blur(12px);
 	transition: opacity 0.5s, transform 0.5s;
 	opacity: 1;
 }
@@ -33,4 +35,13 @@
 .alert-info {
 	background-color: #3182ce;
 	color: white;
+}
+
+@media (max-width: 640px) {
+	.alert {
+		right: 1rem;
+		left: 1rem;
+		min-width: 0;
+		max-width: none;
+	}
 }

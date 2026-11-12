@@ -1,14 +1,14 @@
-<div aria-label="breadcrumb" class="pt-20 pb-5 px-4">
-    <ol class="breadcrumb flex text-sm text-gray-500 flex-wrap whitespace-nowrap">
+<nav aria-label="{{ __('Навигационная цепочка') }}" class="container mx-auto px-4 pt-20 pb-5">
+    <ol class="breadcrumb site-muted flex flex-wrap text-sm">
         @foreach ($breadcrumbs as $breadcrumb)
             <li class="mr-2 flex items-center">
                 @if (!$loop->last)
-                    <a href="{{ $breadcrumb['href'] }}" class="text-gray-500 hover:text-gray-900 hover:underline">{{ $breadcrumb['title'] }}</a>
-                    <span class="text-gray-500 mx-2">/</span>
+                    <a href="{{ $breadcrumb['href'] }}" class="site-link">{{ $breadcrumb['title'] }}</a>
+                    <span class="site-muted mx-2" aria-hidden="true">/</span>
                 @else
-                    <span class="text-gray-900">{{ $breadcrumb['title'] }}</span>
+                    <span class="text-slate-200" aria-current="page">{{ $breadcrumb['title'] }}</span>
                 @endif
             </li>
         @endforeach
     </ol>
-</div>
+</nav>

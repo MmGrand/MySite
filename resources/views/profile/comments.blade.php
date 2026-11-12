@@ -1,24 +1,24 @@
 @if ($comments->isNotEmpty())
     <div class="space-y-6">
         @foreach ($comments as $comment)
-            <div class="border-b pb-4">
-                <h4 class="text-gray-700 hover:text-blue-500 transition duration-300">
-                    <a href="{{ route('posts.show', $comment->post->slug) }}">{{ $comment->post->title }}</a>
+            <div class="site-comment">
+                <h4 class="font-semibold text-slate-200 transition duration-300 hover:text-cyan-300">
+                    <a class="no-underline" href="{{ route('posts.show', $comment->post->slug) }}">{{ $comment->post->title }}</a>
                 </h4>
-                <p class="text-sm text-gray-500">{{ $comment->created_at->format('d.m.Y, H:i') }}</p>
-                <p class="mt-1 text-gray-700">{{ $comment->content }}</p>
+                <p class="site-muted text-sm">{{ $comment->created_at->format('d.m.Y, H:i') }}</p>
+                <p class="site-muted mt-1">{{ $comment->content }}</p>
             </div>
         @endforeach
     </div>
     @if ($comments->hasMorePages())
         <div class="text-center mt-4">
             <button id="load-more-comments" data-url="{{ $comments->nextPageUrl() }}"
-                class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300">{{ __('Показать ещё') }}</button>
+                class="site-button">{{ __('Показать ещё') }}</button>
         </div>
     @endif
 @else
     <div class="mb-4">
-        <p class="text-gray-700">{{ __('У вас пока нет комментариев.') }}</p>
+        <p class="site-muted">{{ __('У вас пока нет комментариев.') }}</p>
     </div>
 @endif
 

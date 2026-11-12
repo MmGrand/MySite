@@ -1,13 +1,33 @@
-document.getElementById('menu-btn').addEventListener('click', function () {
-    const menu = document.getElementById('mobile-menu');
-    if (menu.classList.contains('-translate-y-full')) {
-        menu.classList.remove('-translate-y-full');
-        menu.classList.add('translate-y-0');
-    } else {
-        menu.classList.remove('translate-y-0');
-        menu.classList.add('-translate-y-full');
+const menuButton = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+
+if (menuButton && mobileMenu) {
+    function setMenuOpen(isOpen) {
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        menuButton.setAttribute('aria-label', isOpen ? menuButton.dataset.closeLabel : menuButton.dataset.openLabel);
+        mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+        mobileMenu.toggleAttribute('inert', !isOpen);
+        mobileMenu.classList.toggle('-translate-y-full', !isOpen);
+        mobileMenu.classList.toggle('translate-y-0', isOpen);
     }
-});
+
+    menuButton.addEventListener('click', function () {
+        setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true');
+    });
+
+    mobileMenu.addEventListener('click', function (event) {
+        if (event.target.closest('a')) {
+            setMenuOpen(false);
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
+            setMenuOpen(false);
+            menuButton.focus();
+        }
+    });
+}
 
 let lastScrollTop = 0;
 let timeout;

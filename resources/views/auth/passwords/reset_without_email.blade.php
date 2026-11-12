@@ -5,14 +5,14 @@
 @endsection
 
 @section('content')
-    <x-content-wrapper class="bg-white">
+    <x-content-wrapper>
         <section class="py-12">
             <div class="container mx-auto px-4">
-                <div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg p-6">
-                    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Сброс пароля') }}</h2>
+                <div class="site-card mx-auto max-w-md p-6 md:p-8">
+                    <h1 class="mb-6 text-center text-3xl font-bold tracking-tight text-white">{{ __('Сброс пароля') }}</h1>
 
                     @if (session('status'))
-                        <div class="mb-4 text-green-600">
+                        <div class="mb-4 text-lime-300">
                             {{ session('status') }}
                         </div>
                     @endif

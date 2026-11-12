@@ -7,16 +7,19 @@
 @section('content')
     <x-breadcrumbs :breadcrumbs="$breadcrumbs" />
 
-    <x-content-wrapper class="bg-white">
-        <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Контакты') }}</h2>
+    <x-content-wrapper>
+        <div class="mb-8 text-center">
+            <p class="site-kicker mb-2">{{ __('Остаемся на связи') }}</p>
+            <h1 class="text-3xl font-bold tracking-tight text-white md:text-4xl">{{ __('Контакты') }}</h1>
+        </div>
 
-        <div class="max-w-3xl mx-auto bg-gradient-to-br from-white via-gray-100 to-white shadow-lg rounded-lg overflow-hidden p-6 transform transition-transform duration-500 hover:scale-105">
+        <div class="site-card mx-auto max-w-3xl p-6 md:p-8">
             <div class="flex items-center mb-6">
-                <i class="fas fa-envelope text-blue-500 text-3xl mr-4 transition duration-500 transform hover:scale-110"></i>
+                <i class="fas fa-envelope site-accent mr-4 text-2xl"></i>
                 <div>
-                    <h4 class="text-xl font-semibold text-gray-800">{{ __('Почта') }}</h4>
-                    <p class="text-gray-600">
-                        <a href="mailto:maksimzarubin20002000@gmail.com" class="text-blue-500 hover:underline">
+                    <h4 class="text-lg font-semibold text-white">{{ __('Почта') }}</h4>
+                    <p class="site-muted">
+                        <a href="mailto:maksimzarubin20002000@gmail.com" class="site-link break-all">
                             maksimzarubin20002000@gmail.com
                         </a>
                     </p>
@@ -24,11 +27,11 @@
             </div>
 
             <div class="flex items-center mb-6">
-                <i class="fab fa-vk text-blue-500 text-3xl mr-4 transition duration-500 transform hover:scale-110"></i>
+                <i class="fab fa-vk site-accent mr-4 text-2xl"></i>
                 <div>
-                    <h4 class="text-xl font-semibold text-gray-800">{{ __('VK') }}</h4>
-                    <p class="text-gray-600">
-                        <a href="https://vk.com/maksimzarubin" class="text-blue-500 hover:underline">
+                    <h4 class="text-lg font-semibold text-white">{{ __('VK') }}</h4>
+                    <p class="site-muted">
+                        <a href="https://vk.com/maksimzarubin" class="site-link break-all">
                             https://vk.com/maksimzarubin
                         </a>
                     </p>
@@ -36,11 +39,11 @@
             </div>
 
             <div class="flex items-center mb-6">
-                <i class="fab fa-telegram-plane text-blue-500 text-3xl mr-4 transition duration-500 transform hover:scale-110"></i>
+                <i class="fab fa-telegram-plane site-accent mr-4 text-2xl"></i>
                 <div>
-                    <h4 class="text-xl font-semibold text-gray-800">{{ __('Telegram') }}</h4>
-                    <p class="text-gray-600">
-                        <a href="https://t.me/MmGranddd" class="text-blue-500 hover:underline">
+                    <h4 class="text-lg font-semibold text-white">{{ __('Telegram') }}</h4>
+                    <p class="site-muted">
+                        <a href="https://t.me/MmGranddd" class="site-link break-all">
                             https://t.me/MmGranddd
                         </a>
                     </p>
@@ -48,11 +51,11 @@
             </div>
 
             <div class="flex items-center mb-6">
-                <i class="fas fa-phone text-blue-500 text-3xl mr-4 transition duration-500 transform hover:scale-110"></i>
+                <i class="fas fa-phone site-accent mr-4 text-2xl"></i>
                 <div>
-                    <h4 class="text-xl font-semibold text-gray-800">{{ __('Телефон') }}</h4>
-                    <p class="text-gray-600">
-                        <a href="tel:+79235641698" class="text-blue-500 hover:underline">
+                    <h4 class="text-lg font-semibold text-white">{{ __('Телефон') }}</h4>
+                    <p class="site-muted">
+                        <a href="tel:+79235641698" class="site-link">
                             +7 (923) 564-1698
                         </a>
                     </p>

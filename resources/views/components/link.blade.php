@@ -4,7 +4,7 @@
     'type' => 'link', // 'link' or 'button'
     'buttonType' => 'button',
     'classes' => '',
-    'defaultClasses' => 'text-blue-600 hover:underline transition duration-300 ease-in-out',
+    'defaultClasses' => 'site-link',
 ])
 
 @if($type === 'link')

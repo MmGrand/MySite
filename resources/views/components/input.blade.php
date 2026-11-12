@@ -9,4 +9,4 @@
 
 <input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}" value="{{ $value }}"
     {{ $required ? 'required' : '' }}
-    class="w-full p-3 border border-gray-300 rounded mt-1 focus:outline-none focus:border-blue-500 {{ $classes }}">
+    class="site-input mt-1 {{ $classes }}">

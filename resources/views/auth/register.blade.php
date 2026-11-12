@@ -5,11 +5,12 @@
 @endsection
 
 @section('content')
-    <x-content-wrapper class="bg-white">
+    <x-content-wrapper>
         <section class="py-12">
             <div class="container mx-auto px-4">
-                <div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg p-6">
-                    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Регистрация') }}</h2>
+                <div class="site-card mx-auto max-w-md p-6 md:p-8">
+                    <p class="site-kicker mb-2 text-center">{{ __('Присоединяйтесь') }}</p>
+                    <h1 class="mb-6 text-center text-3xl font-bold tracking-tight text-white">{{ __('Регистрация') }}</h1>
 
                     <x-errors />
 
@@ -43,7 +44,7 @@
                     </form>
 
                     <div class="text-center mt-4">
-                        <p class="text-gray-600">
+                        <p class="site-muted">
                             {{ __('Уже есть аккаунт?') }}
                             <x-link :href="route('login')" :text="__('Войти')" />
                         </p>

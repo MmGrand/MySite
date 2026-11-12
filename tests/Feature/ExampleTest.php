@@ -4,7 +4,11 @@ namespace Tests\Feature;
 
 use App\MoonShine\Resources\PostResource;
 use App\MoonShine\Pages\Dashboard;
+use App\Models\Project;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Vite;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use Tests\TestCase;
@@ -52,6 +56,47 @@ class ExampleTest extends TestCase
             unlink($directory . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'manifest.json');
             rmdir($directory . DIRECTORY_SEPARATOR . 'build');
             rmdir($directory);
+        }
+    }
+
+    public function test_project_cards_keep_their_content_inside_each_grid_item(): void
+    {
+        $projects = collect([
+            new Project([
+                'title' => 'Project One',
+                'url' => 'https://example.test/one',
+                'preview_image' => '/one.png',
+                'preview_content' => 'First description',
+            ]),
+            new Project([
+                'title' => 'Project Two',
+                'url' => 'https://example.test/two',
+                'preview_image' => '/two.png',
+                'preview_content' => 'Second description',
+            ]),
+        ]);
+
+        foreach ($projects as $project) {
+            $project->setRelation('tags', collect());
+        }
+
+        $html = Blade::render(
+            '<x-project-list :projects="$projects" columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" gap="gap-6" />',
+            ['projects' => $projects]
+        );
+        $document = new DOMDocument();
+        $previousLibxmlSetting = libxml_use_internal_errors(true);
+        $document->loadHTML('<!doctype html><html><body>' . $html . '</body></html>');
+        libxml_clear_errors();
+        libxml_use_internal_errors($previousLibxmlSetting);
+        $xpath = new DOMXPath($document);
+        $cards = $xpath->query("//div[contains(concat(' ', normalize-space(@class), ' '), ' grid ')]/article");
+
+        $this->assertSame(2, $cards->length);
+
+        foreach ($cards as $card) {
+            $this->assertNotNull($xpath->query('.//a//img', $card)->item(0));
+            $this->assertNotNull($xpath->query('.//a//h3', $card)->item(0));
         }
     }
 

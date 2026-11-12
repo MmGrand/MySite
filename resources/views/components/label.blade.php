@@ -4,4 +4,4 @@
 	'classes' => '',
 ])
 
-<label for="{{ $for }}" class="block text-gray-700 {{ $classes }}">{{ __($value) }}</label>
+<label for="{{ $for }}" class="site-label {{ $classes }}">{{ __($value) }}</label>

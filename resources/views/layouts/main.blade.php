@@ -19,7 +19,7 @@
         @yield('content')
     </main>
     @include('includes.footer')
-    <button id="scrollTopBtn" class="fixed bottom-4 right-4 z-50 bg-blue-500 hover:bg-blue-700 text-white text-2xl py-3 px-4 rounded-full shadow-lg transition-opacity duration-300 opacity-0 hidden">
+    <button id="scrollTopBtn" aria-label="{{ __('Наверх') }}" class="site-button fixed bottom-5 right-5 z-50 rounded-full !p-3 text-xl transition-opacity duration-300 opacity-0 hidden">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 

@@ -5,20 +5,21 @@
 @endsection
 
 @section('content')
-    <x-content-wrapper class="bg-white">
+    <x-content-wrapper>
         <section class="py-12">
             <div class="container mx-auto px-4">
-                <div class="max-w-3xl mx-auto bg-gray-100 shadow-lg rounded-lg p-6">
-                    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">{{ __('Личный кабинет') }}</h2>
+                <div class="site-card mx-auto max-w-3xl p-6 md:p-8">
+                    <p class="site-kicker mb-2 text-center">{{ __('Настройки аккаунта') }}</p>
+                    <h1 class="mb-6 text-center text-3xl font-bold tracking-tight text-white">{{ __('Личный кабинет') }}</h1>
 
-                    <div class="text-center mb-6 bg-white p-6 rounded-lg shadow-md">
+                    <div class="site-panel mb-6 p-6 text-center">
                         @if ($user->avatar)
-                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}" class="site-avatar mx-auto h-32 w-32 rounded-full shadow-md">
                         @else
-                            <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <img src="{{ asset('images/default-avatar.png') }}" alt="{{ $user->name }}" class="site-avatar mx-auto h-32 w-32 rounded-full shadow-md">
                         @endif
-                        <h3 class="text-2xl font-semibold text-gray-900 mt-4">{{ $user->name }}</h3>
-                        <p class="text-gray-600 mt-2">{{ $user->email }}</p>
+                        <h3 class="mt-4 text-2xl font-semibold text-white">{{ $user->name }}</h3>
+                        <p class="site-muted mt-2">{{ $user->email }}</p>
 
                         <form method="POST" action="{{ route('profile.update_avatar') }}" enctype="multipart/form-data" class="mt-4" id="avatarForm">
                             @csrf
@@ -43,8 +44,8 @@
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-lg rounded-lg overflow-hidden p-6 mb-8" id="comments-container">
-                        <h3 class="text-2xl font-bold mb-4 text-gray-900">{{ __('Мои комментарии') }}</h3>
+                    <div class="site-panel mb-8 p-6" id="comments-container">
+                        <h3 class="mb-4 text-2xl font-bold text-white">{{ __('Мои комментарии') }}</h3>
                         @include('profile.comments', ['comments' => $comments])
                     </div>
                 </div>
