@@ -1,19 +1,25 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\ContentController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::get('/home', [ContentController::class, 'home']);
+Route::get('/posts', [ContentController::class, 'posts']);
+Route::get('/posts/{slug}', [ContentController::class, 'post']);
+Route::get('/projects', [ContentController::class, 'projects']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('throttle:10,1')->group(function () {
+    Route::post('/register', [AccountController::class, 'register']);
+    Route::post('/login', [AccountController::class, 'login']);
+    Route::post('/forgot-password', [AccountController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AccountController::class, 'resetPassword']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AccountController::class, 'user']);
+    Route::post('/logout', [AccountController::class, 'logout']);
+    Route::post('/profile/avatar', [AccountController::class, 'avatar']);
+    Route::get('/profile/comments', [AccountController::class, 'comments']);
+    Route::post('/comments', [AccountController::class, 'storeComment']);
 });
