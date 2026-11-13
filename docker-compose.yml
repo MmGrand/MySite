@@ -1,70 +1,166 @@
 services:
-    laravel.test:
+    app:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.3
+            context: .
             dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP:-1000}'
-        image: sail-8.3/app
-        container_name: mysite
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '${APP_PORT:-80}:80'
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+            target: development
         environment:
-            WWWUSER: '${WWWUSER:-1000}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            APP_ENV: local
+            APP_DEBUG: "true"
+            APP_URL: http://localhost:${APP_PORT:-8080}
+            CACHE_STORE: file
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: ${DB_DATABASE:-mysite}
+            DB_USERNAME: ${DB_USERNAME:-mysite}
+            DB_PASSWORD: ${DB_PASSWORD:-local-dev-password}
+            FILESYSTEM_DISK: local
+            LOG_CHANNEL: stderr
+            MAIL_MAILER: smtp
+            MAIL_HOST: mailpit
+            MAIL_PORT: 1025
+            QUEUE_CONNECTION: sync
+            SESSION_DRIVER: file
+            SESSION_SECURE_COOKIE: "false"
         volumes:
-            - '.:/var/www/html'
-            - ./storage:/var/www/html/storage
-            - ./public/storage:/var/www/html/public/storage
-        networks:
-            - sail
+            - .:/var/www/html:ro
+            - vendor:/var/www/html/vendor
+            - app_storage:/var/www/html/storage
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=64m,uid=33,gid=33,mode=1777
+            - /var/www/html/bootstrap/cache:rw,noexec,nosuid,size=16m,uid=33,gid=33,mode=0755
         depends_on:
             mysql:
                 condition: service_healthy
-    mysql:
-        image: 'mysql/mysql-server:8.0'
-        container_name: mysql_mysite
-        ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-        volumes:
-            - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
-            - sail
+            - app
         healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
-            retries: 3
+            test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 9000) ? 0 : 1);"]
+            interval: 30s
             timeout: 5s
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin_mysite
-        environment:
-            PMA_HOST: mysql
+            retries: 3
+            start_period: 30s
+        read_only: true
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 256
+        restart: unless-stopped
+
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: development-nginx
         ports:
-            - "8080:80"
-        networks:
-            - sail
+            - "127.0.0.1:${APP_PORT:-8080}:8080"
+        volumes:
+            - .:/var/www/html:ro
+            - app_storage:/var/www/html/storage:ro
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=32m,uid=101,gid=101,mode=1777
+            - /var/cache/nginx:rw,noexec,nosuid,size=32m,uid=101,gid=101,mode=0750
+            - /var/run:rw,noexec,nosuid,size=8m,uid=101,gid=101,mode=0750
         depends_on:
-            - mysql
+            app:
+                condition: service_healthy
+        networks:
+            - app
+        read_only: true
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 128
+        restart: unless-stopped
+
+    mysql:
+        image: mysql:8.4
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-local-root-only}
+            MYSQL_DATABASE: ${DB_DATABASE:-mysite}
+            MYSQL_USER: ${DB_USERNAME:-mysite}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-local-dev-password}
+        ports:
+            - "127.0.0.1:${DB_FORWARD_PORT:-3306}:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+            interval: 5s
+            timeout: 5s
+            retries: 12
+            start_period: 30s
+        networks:
+            - app
+        read_only: true
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=64m
+            - /var/run/mysqld:rw,noexec,nosuid,size=16m,uid=999,gid=999,mode=1777
+        cap_drop:
+            - NET_RAW
+            - NET_BIND_SERVICE
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 256
+        restart: unless-stopped
+
+    vite:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: development-vite
+        environment:
+            VITE_HMR_HOST: ${VITE_HMR_HOST:-localhost}
+            VITE_PORT: ${VITE_PORT:-5173}
+        working_dir: /var/www/html/frontend
+        command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+        ports:
+            - "127.0.0.1:${VITE_PORT:-5173}:5173"
+        volumes:
+            - .:/var/www/html
+            - frontend_node_modules:/var/www/html/frontend/node_modules
+        networks:
+            - app
+        read_only: true
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=32m,uid=1000,gid=1000,mode=1777
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 128
+        restart: unless-stopped
+
+    mailpit:
+        image: axllent/mailpit:v1.27
+        ports:
+            - "127.0.0.1:8025:8025"
+        networks:
+            - app
+        read_only: true
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=16m
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 128
+        restart: unless-stopped
+
 networks:
-    sail:
+    app:
         driver: bridge
+
 volumes:
-    sail-mysql:
-        driver: local
+    app_storage:
+    frontend_node_modules:
+    mysql_data:
+    vendor:

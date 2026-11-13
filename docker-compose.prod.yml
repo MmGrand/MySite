@@ -1,0 +1,122 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production-app
+        env_file:
+            - .env.production
+        environment:
+            APP_ENV: production
+            APP_DEBUG: "false"
+            APP_URL: ${APP_URL:?Set APP_URL in .env.production}
+            APP_KEY: ${APP_KEY:?Set APP_KEY in .env.production}
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: ${DB_DATABASE:?Set DB_DATABASE in .env.production}
+            DB_USERNAME: ${DB_USERNAME:?Set DB_USERNAME in .env.production}
+            DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env.production}
+            FILESYSTEM_DISK: public
+            LOG_CHANNEL: stderr
+            SESSION_SECURE_COOKIE: "true"
+        volumes:
+            - app_storage:/var/www/html/storage
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=64m,uid=33,gid=33,mode=1777
+            - /var/www/html/bootstrap/cache:rw,noexec,nosuid,size=16m,uid=33,gid=33,mode=0755
+        depends_on:
+            mysql:
+                condition: service_healthy
+        networks:
+            - backend
+            - outbound
+        read_only: true
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 256
+        restart: unless-stopped
+
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            target: production-nginx
+        environment:
+            SERVER_NAME: ${SERVER_NAME:?Set SERVER_NAME in .env.production}
+        ports:
+            - "${HTTP_PORT:-80}:8080"
+            - "${HTTPS_PORT:-443}:8443"
+        volumes:
+            - app_storage:/var/www/html/storage:ro
+            - ${TLS_CERT_DIR:?Set TLS_CERT_DIR in .env.production}:/etc/nginx/certs:ro
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=32m,uid=101,gid=101,mode=1777
+            - /var/cache/nginx:rw,noexec,nosuid,size=32m,uid=101,gid=101,mode=0750
+            - /var/run:rw,noexec,nosuid,size=8m,uid=101,gid=101,mode=0750
+        depends_on:
+            app:
+                condition: service_healthy
+        networks:
+            - edge
+            - backend
+        read_only: true
+        cap_drop:
+            - ALL
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 128
+        restart: unless-stopped
+
+    mysql:
+        image: mysql:8.4
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+            MYSQL_DATABASE: ${DB_DATABASE:?Set DB_DATABASE in .env.production}
+            MYSQL_USER: ${DB_USERNAME:?Set DB_USERNAME in .env.production}
+            MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env.production}
+        secrets:
+            - mysql_root_password
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+            interval: 5s
+            timeout: 5s
+            retries: 12
+            start_period: 30s
+        networks:
+            - backend
+        read_only: true
+        tmpfs:
+            - /tmp:rw,noexec,nosuid,size=64m
+            - /var/run/mysqld:rw,noexec,nosuid,size=16m,uid=999,gid=999,mode=1777
+        cap_drop:
+            - NET_RAW
+            - NET_BIND_SERVICE
+        security_opt:
+            - no-new-privileges:true
+        init: true
+        pids_limit: 256
+        restart: unless-stopped
+
+secrets:
+    mysql_root_password:
+        file: ${MYSQL_ROOT_PASSWORD_FILE:?Set MYSQL_ROOT_PASSWORD_FILE in .env.production}
+
+networks:
+    edge:
+        driver: bridge
+    backend:
+        driver: bridge
+        internal: true
+    outbound:
+        driver: bridge
+
+volumes:
+    app_storage:
+    mysql_data:
