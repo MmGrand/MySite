@@ -60,6 +60,23 @@ GET /api/projects?tag=vue
 
 Полный список маршрутов определён в [`routes/api.php`](routes/api.php) и [`routes/web.php`](routes/web.php).
 
+## Проверки
+
+GitHub Actions запускает PHPUnit-тесты Laravel, frontend unit-тесты Vitest и сборку SPA при каждом push и pull request. Развёртывание не настроено. PHP-тесты используют SQLite в памяти и требуют расширения `pdo_sqlite` и `gd`.
+
+После установки зависимостей проверки можно запустить локально:
+
+```powershell
+php artisan test
+Set-Location frontend
+npm ci
+npm test
+npm run build
+Set-Location ..
+```
+
+Новые frontend unit-тесты можно добавлять рядом с исходными файлами с расширением `.test.js`.
+
 ## Структура проекта
 
 - `app/` — модели, контроллеры, middleware и другие компоненты Laravel.
